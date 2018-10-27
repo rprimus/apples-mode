@@ -1,3 +1,5 @@
+Fork of [tequilasunset/apples-mode](https://github.com/tequilasunset/apples-mode) with pending [pull request](https://github.com/tequilasunset/apples-mode/pull/2) applied.
+
 apples-mode
 ===========
 
