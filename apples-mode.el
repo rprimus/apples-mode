@@ -173,13 +173,13 @@ if it doesn't exist."
 (defcustom apples-decompile-callback 'apples-handle-decompile
   "Function to handle decompiled text via `apples-decompile'.
 It is required two arguments SCRIPT and FILENAME.
-SCRIPT is decompiled script. FILENAME is decompiled file name."
+SCRIPT is decompiled script.  FILENAME is decompiled file name."
   :type 'function
   :group 'apples)
 
 (defcustom apples-decompile-query nil
   "If valid char is specified, handle the output of decompiling
-with specified one. Acceptable chars are as following:\n
+with specified one.  Acceptable chars are as following:\n
 ?o - overwrite file by decompiled script
 ?i - insert decompiled script at point
 ?c - copy decompiled script in clipboard.\n
@@ -200,7 +200,7 @@ Because this variable is used in `apples-handle-decompile'."
 
 (defcustom apples-continuation-offset apples-indent-offset
   "Extra offset for the lines whose previous line is terminated with
-the continuation character. See also `apples-continuation-char'."
+the continuation character.  See also `apples-continuation-char'."
   :type 'integer
   :group 'apples)
 
@@ -231,7 +231,7 @@ See also `apples-indenters', `apples-indent-regexps' and
      "with,transaction"
      ))
   "Regexps match to previous line, which invoke the indentation of
-current line. This variable has priority over `apples-indenters'.\n
+current line.  This variable has priority over `apples-indenters'.\n
 See also `apples-deindenters' and `apples-noindent-regexps'."
   :type '(repeat regexp)
   :group 'apples)
@@ -245,8 +245,8 @@ See also `apples-deindenters' and `apples-noindent-regexps'."
      "tell\\>.+\\<to,\\<"
      ))
   "Regexps match to previous line, which invoke the no-indentation of
-current line. It means that the indentation of current line will
-be same as previous line's one. This variable has priority over
+current line.  It means that the indentation of current line will
+be same as previous line's one.  This variable has priority over
 `apples-indent-regexps'.\n
 See also `apples-indenters' and `apples-deindenters'."
   ;; It is also used in `apples-parse-statement'.
@@ -265,7 +265,7 @@ See also `apples-indenters' and `apples-deindenters'."
     ("C-c t s"   . apples-send-to-applescript-editor)
     ("C-c t e"   . apples-end-completion)
     )
-  "Alist of keybindings for `apples-mode'. Each element should be the form
+  "Alist of keybindings for `apples-mode'.  Each element should be the form
 \(KEY . COMMAND). KEY must be a string read by `kbd'.
 If the value is nil, nothing will be set."
   :type '(repeat (cons string symbol))  ; Can't set to nil via customize group?
@@ -281,7 +281,7 @@ If nil, treated as a symbol."
 
 (defcustom apples-end-completion-hl 'words
   "Just after end completion, highlight 'region, 'words or
-nothing (nil). See also `apples-end-completion-hl-duration'."
+nothing (nil).  See also `apples-end-completion-hl-duration'."
   :type '(choice symbol (const nil))
   :group 'apples)
 
@@ -299,7 +299,7 @@ nothing (nil). See also `apples-end-completion-hl-duration'."
   '((candidates . (apples-keywords))
     (symbol . "d")
     (cache))
-  "Source for keywords of AppleScript. This is an additional source for
+  "Source for keywords of AppleScript.  This is an additional source for
 `auto-complete-mode'."
   :type 'sexp
   :link '(url-link "http://github.com/m2ym/auto-complete")
@@ -378,7 +378,7 @@ Otherwise delete stored info."
 (apples-define-tmp-file -1713)
 (defun apples-error--1713-workaround (f/s)
   "Avoid AppleScript's error -1713.\n
-   execution error: No user interaction allowed. (-1713)"
+   execution error: No user interaction allowed.  (-1713)"
   ;; Ref: <http://macscripter.net/viewtopic.php?id=26334>
   (unless (file-exists-p f/s)
     (with-temp-file apples-tmp--1713
@@ -494,7 +494,7 @@ After that, delete BUF's contents."
     str))
 
 (defun apples-do-applescript (filename-or-script &optional callback)
-  "Execute FILENAME-OR-SCRIPT as AppleScript. CALLBACK is required
+  "Execute FILENAME-OR-SCRIPT as AppleScript.  CALLBACK is required
 three arguments RESULT, EXIT-PROC-STATUS and FILENAME-OR-SCRIPT.
 If CALLBACK is omitted, call `apples-result'."
   (lexical-let* ((f/s filename-or-script)
@@ -579,7 +579,7 @@ To specify the default query, set `apples-decompile-query'."
           (kill-ring-save (point-min) (point-max))))))
 
 (defun apples-decompile (filename)
-  "Decompile FILENAME. See also `apples-decompile-query' and
+  "Decompile FILENAME.  See also `apples-decompile-query' and
 `apples-decompile-callback'."
   (interactive
    (list (read-file-name "File: " buffer-file-name buffer-file-name)))
@@ -743,7 +743,7 @@ To specify the default query, set `apples-decompile-query'."
     (f8 . 100) (f9 . 101) (f10 . 109) (f11 . 103) (f12 . 111) (escape . 53)
     (tab . 48) (?  . 49) (return  . 36) (backspace . 51) (left . 123)
     (right . 124) (down . 125) (up . 126))
-  "Index of key codes. Each element has the form (CHAR-OR-SYMBOL . KEY-CODE).")
+  "Index of key codes.  Each element has the form (CHAR-OR-SYMBOL . KEY-CODE).")
 
 (defun apples-lookup-key->key-code ()
   "Look up key code of AppleScript from key."
@@ -827,7 +827,7 @@ If leading char except whitespaces is not a word, return nil."
        (match-beginning 1) (match-end 1)))))
 
 (defsubst apples-line-string ()
-  "Return the contents of current line as a string. Leading and trailing
+  "Return the contents of current line as a string.  Leading and trailing
 whitespaces are deleted."
   (let (beg end)
     (save-excursion
@@ -998,7 +998,7 @@ whitespaces are deleted."
                                               end)))))))))))))
 
 (defun apples-end-completion ()
-  "Insert `end + current-statement-name'. If `apples-end-completion-hl' is
+  "Insert `end + current-statement-name'.  If `apples-end-completion-hl' is
 specified, also highlight the matching statement."
   (interactive "^")
   (multiple-value-bind (bol bword eword)
