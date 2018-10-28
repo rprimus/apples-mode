@@ -167,13 +167,14 @@ See also `apples-indenters', `apples-indent-regexps' and
 
 (defcustom apples-indent-regexps
   (mapcar
-    (lambda (re) (concat "^" (apples-replace-re-comma->spaces re)))
-    '(;; script foo
-       "script,\\<"
-       "using,terms,from"
-       "with,timeout"
-       "with,transaction"
-       ))
+   (lambda (re)
+     (concat "^" (apples-replace-re-comma->spaces re)))
+   '(;; script foo
+     "script,\\<"
+     "using,terms,from"
+     "with,timeout"
+     "with,transaction"
+     ))
   "Regexps match to previous line, which invoke the indentation of \
 current line.  This variable has priority over `apples-indenters'.\n
 See also `apples-deindenters' and `apples-noindent-regexps'."
@@ -182,12 +183,13 @@ See also `apples-deindenters' and `apples-noindent-regexps'."
 
 (defcustom apples-noindent-regexps
   (mapcar
-    (lambda (re) (concat "^" (apples-replace-re-comma->spaces re)))
-    '(;; if foo then bar
-       "if\\>.+\\<then,\\<"
-       ;; tell foo to bar
-       "tell\\>.+\\<to,\\<"
-       ))
+   (lambda (re)
+     (concat "^" (apples-replace-re-comma->spaces re)))
+   '(;; if foo then bar
+     "if\\>.+\\<then,\\<"
+     ;; tell foo to bar
+     "tell\\>.+\\<to,\\<"
+     ))
   "Regexps match to previous line, which invoke the no-indentation of \
 current line.  It means that the indentation of current line will
 be same as previous line's one.  This variable has priority over
@@ -323,8 +325,7 @@ nothing (nil).  See also `apples-end-completion-hl-duration'."
   (face error-highlight :background "DeepPink3")
   (face result-prompt :inherit minibuffer-prompt)
   (face error-prompt :inherit font-lock-warning-face)
-  (face end-completion :inherit apples-error-highlight)
-  )
+  (face end-completion :inherit apples-error-highlight))
 
 ;;; Process
 (apples-define-show-func last-result (apples-plist-get :last-result))
@@ -580,20 +581,20 @@ To specify the default query, set `apples-decompile-query'."
   "Decompile FILENAME.  See also `apples-decompile-query' and \
 `apples-decompile-callback'."
   (interactive
-    (list (read-file-name "File: " buffer-file-name buffer-file-name)))
+   (list (read-file-name "File: " buffer-file-name buffer-file-name)))
   (lexical-let* ((filename (expand-file-name filename))
-                  (buf (get-buffer-create " *apples-decompile*"))
-                  msg)
+                 (buf (get-buffer-create " *apples-decompile*"))
+                 msg)
     (when (file-exists-p filename)
       (setq msg (message "Decompiling..."))
       (set-process-sentinel
-        (start-process "apples-decompile" buf "osadecompile" filename)
-        (lambda (proc _)
-          (if (apples-proc-failed-p proc)
-            (apples-proc-failed msg buf)
-            (funcall apples-decompile-callback
-              (apples-buffer-string buf)
-              filename)))))))
+       (start-process "apples-decompile" buf "osadecompile" filename)
+       (lambda (proc _)
+         (if (apples-proc-failed-p proc)
+             (apples-proc-failed msg buf)
+           (funcall apples-decompile-callback
+                    (apples-buffer-string buf)
+                    filename)))))))
 
 ;; Send script to AppleScript Editor
 (defun apples-quoted-string (str)
@@ -959,45 +960,45 @@ whitespaces are deleted."
   "Parse the current statement block and return the values \
 \(BOL-WHERE-STATEMENT-STARTS BEG-WORD-OF-STATEMENT END-WORD-OF-STATEMENT)."
   (destructuring-bind (min count nils &aux bol lstr)
-    (values (point-min) 1 (values nil nil nil))
+      (values (point-min) 1 (values nil nil nil))
     (if (apples-in-string/comment-p)
-      nils
+        nils
       (catch 'val
         (save-excursion
           (while (/= (point) min)
             (catch 'loop
               (if (null (setq bol (apples-ideal-prev-bol)))
-                (throw 'val nils)
+                  (throw 'val nils)
                 (goto-char bol)
                 (setq lstr (apples-line-string))
                 (if (string-match "^end\\>" lstr)
-                  (incf count)
+                    (incf count)
                   (loop for (beg . end) in apples-statements
-                    when (and (string-match (concat "^" beg "\\>") lstr)
-                           (not (apples-string-match apples-noindent-regexps
-                                  lstr)))
-                    do (if (zerop (decf count))
-                         (throw 'val (values bol beg end))
-                         (throw 'loop nil))
-                    finally
-                    ;; in case of `on'
-                    (when (and (string-match (concat "^on \\("
-                                               apples-identifier
-                                               "\\)")
-                                 lstr)
-                            (setq end (match-string-no-properties 1 lstr))
-                            (not (string= end "error"))
-                            (zerop (decf count)))
-                      (throw 'val (values bol
-                                    (concat "on " end)
-                                    end)))))))))))))
+                     when (and (string-match (concat "^" beg "\\>") lstr)
+                               (not (apples-string-match apples-noindent-regexps
+                                                         lstr)))
+                     do (if (zerop (decf count))
+                            (throw 'val (values bol beg end))
+                          (throw 'loop nil))
+                     finally
+                     ;; in case of `on'
+                       (when (and (string-match (concat "^on \\("
+                                                        apples-identifier
+                                                        "\\)")
+                                                lstr)
+                                  (setq end (match-string-no-properties 1 lstr))
+                                  (not (string= end "error"))
+                                  (zerop (decf count)))
+                         (throw 'val (values bol
+                                             (concat "on " end)
+                                             end)))))))))))))
 
 (defun apples-end-completion ()
   "Insert `end + current-statement-name'.  If `apples-end-completion-hl' is \
 specified, also highlight the matching statement."
   (interactive "^")
   (multiple-value-bind (bol bword eword)
-    (apples-parse-statement)
+      (apples-parse-statement)
     (when eword
       (insert "end " eword)
       (when apples-end-completion-hl
@@ -1311,8 +1312,8 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
   (when (and apples-keymap
              (not (apples-plist-get :keybinded?)))
     (loop for (key . cmd) in apples-keymap
-          do (define-key apples-mode-map (read-kbd-macro key) cmd)
-          finally (apples-plist-put :keybinded? t))))
+       do (define-key apples-mode-map (read-kbd-macro key) cmd)
+       finally (apples-plist-put :keybinded? t))))
 
 (defvar apples-mode-syntax-table
   (let ((st (make-syntax-table))
@@ -1334,7 +1335,7 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
            (?*  ". 23b")
            )))
     (loop for (char entry) in lst
-          do (modify-syntax-entry char entry st))
+       do (modify-syntax-entry char entry st))
     st)
   "Syntax table used in `apples-mode'.")
 
