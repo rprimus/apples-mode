@@ -87,6 +87,14 @@
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.\\(applescri\\|sc\\)pt\\'" . apples-mode))
 
+(defsubst apples-replace-re-comma->spaces (re)
+  "Replace all `,'s with `\\\\s-+' in RE."
+  (replace-regexp-in-string "," "\\\\s-+" re))
+
+(defsubst apples-replace-re-space->spaces (re)
+  "Replace all ` 's with `\\\\s-+' in RE."
+  (replace-regexp-in-string " " "\\\\s-+" re))
+
 (defconst apples-mode-version "0.0.4"
   "The Current version of `apples-mode'.")
 
@@ -266,19 +274,14 @@ nothing (nil).  See also `apples-end-completion-hl-duration'."
 
 (apples-define-show-func mode-version apples-mode-version)
 
-(defsubst apples-replace-re-comma->spaces (re)
-  "Replace all `,'s with `\\\\s-+' in RE."
-  (replace-regexp-in-string "," "\\\\s-+" re))
-
-(defsubst apples-replace-re-space->spaces (re)
-  "Replace all ` 's with `\\\\s-+' in RE."
-  (replace-regexp-in-string " " "\\\\s-+" re))
 
 ;; DB
 (defvar apples-plist nil)
+
 (defsubst apples-plist-put (prop val)
   (setq apples-plist (plist-put apples-plist prop val))
   val)
+
 (defsubst apples-plist-get (prop)
   (plist-get apples-plist prop))
 
