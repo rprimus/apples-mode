@@ -1105,8 +1105,7 @@ specified, also highlight the matching statement."
                   "Macintosh HD:System:Library:CoreServices:AppleScript Runner.app:"
                   "/System/Library/CoreServices/AppleScript Runner.app/")
 
-		             ;; # Applescript Runner ?!?
-
+                 ;; # Applescript Runner ?!?
                  ("current user folder"
                   "Macintosh HD:Users:username:"
                   "/Users/username/")
@@ -1221,13 +1220,13 @@ specified, also highlight the matching statement."
 (defvar apples-font-lock-keywords
   (let ((i apples-identifier))
     (cl-flet ((kws (type) (apples-replace-re-space->spaces
-                        (regexp-opt (apples-keywords type) 'words)))
-           (cat (&rest s) (apples-replace-re-comma->spaces (apply #'concat s))))
+                           (regexp-opt (apples-keywords type) 'words)))
+              (cat (&rest s) (apples-replace-re-comma->spaces (apply #'concat s))))
       `(
         ("\\<error\\>"                          0 'apples-error                )
         (,(kws 'statements)                     1 'apples-statements           )
         (,(cat "^\\s-*\\(?:on\\|to\\),\\(" i "\\)")
-         1 font-lock-function-name-face )
+          1 font-lock-function-name-face )
         (,(cat "\\<set,\\(" i "\\),to\\>")      1 font-lock-variable-name-face )
         (,(apples-continuation-char)            0 'apples-continuation-char    )
         (,(kws 'standard-folders)               1 'apples-standard-folders     )
@@ -1252,15 +1251,15 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
         ["Open Scratch" apples-open-scratch]
         ["Open Dictionary..." apples-open-dict-index]
         ("Edit" :visible (not buffer-read-only)
-         ["(Un)comment Region" apples-comment-or-uncomment-region]
-         ["Comment Dwim" apples-comment-dwim]
-         "---"
-         ["Insert Continuation Char" apples-insert-continuation-char]
-         ["Insert Continuation Char and Newline"
-          apples-insert-continuation-char-and-newline]
-         "---"
-         ["End Completion" apples-end-completion]
-         )
+                ["(Un)comment Region" apples-comment-or-uncomment-region]
+                ["Comment Dwim" apples-comment-dwim]
+                "---"
+                ["Insert Continuation Char" apples-insert-continuation-char]
+                ["Insert Continuation Char and Newline"
+                 apples-insert-continuation-char-and-newline]
+                "---"
+                ["End Completion" apples-end-completion]
+                )
         ("Execution"
          ["Run File" apples-run-file]
          ["Run Buffer" apples-run-buffer]
@@ -1281,22 +1280,22 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
           ["Key Code => Key" apples-lookup-key-code->key])
          ("path to..."
           ,@(loop for folder in (nreverse (apples-keywords 'standard-folders))
-                  collect (multiple-value-bind (path posix)
-                              (with-temp-buffer
-                                (insert folder)
-                                (let ((pos (point-min)))
-                                  (values (get-text-property pos 'path)
-                                          (get-text-property pos 'posix))))
-                            `(,(capitalize folder)
-                              [,folder
-                               (insert ,folder)
-                               (not buffer-read-only)]
-                              [,(concat "PATH: " path)
-                               (prin1 ,path (current-buffer))
-                               (not buffer-read-only)]
-                              [,(concat "POSIX: " posix)
-                               (prin1 ,posix (current-buffer))
-                               (not buffer-read-only)]))))
+               collect (multiple-value-bind (path posix)
+                           (with-temp-buffer
+                             (insert folder)
+                             (let ((pos (point-min)))
+                               (values (get-text-property pos 'path)
+                                       (get-text-property pos 'posix))))
+                         `(,(capitalize folder)
+                            [,folder
+                             (insert ,folder)
+                             (not buffer-read-only)]
+                            [,(concat "PATH: " path)
+                              (prin1 ,path (current-buffer))
+                              (not buffer-read-only)]
+                            [,(concat "POSIX: " posix)
+                              (prin1 ,posix (current-buffer))
+                              (not buffer-read-only)]))))
          )
         "---"
         ["Customizations" apples-customize-group]
