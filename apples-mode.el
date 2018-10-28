@@ -48,7 +48,7 @@
 ;;
 ;; [FEATURES]
 ;;
-;; Commands for the execution have the prefix `apples-run-'. You can see
+;; Commands for the execution have the prefix `apples-run-'.  You can see
 ;; the other features via menu.
 ;;
 ;; [CONFIGURATION]
@@ -119,7 +119,7 @@
 
 ;; temp files
 (defcustom apples-tmp-dir nil
-  "Specify the path of temp dir. If nil, temp dir will be created to
+  "Specify the path of the temp dir.  If nil, temp dir will be created in
 the same directory where apples-mode.el is located."
   :type '(choice directory (const nil))
   :group 'apples)
