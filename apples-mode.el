@@ -1,16 +1,15 @@
 ;;; apples-mode.el --- Major mode for editing and executing AppleScript code
 
-;; Version 0.0.2 works with OSX up to 10.9: "AppleScript Editor"
-;; Version 0.0.3 works with OSX from 10.10 on: "Script Editor"
-
 ;; Copyright (C) 2011 tequilasunset
 ;; Copyright (C) 2017 Jean-Christophe Helary
+;; Copyright (C) 2018 R Primus
 
 ;; Author: tequilasunset <tequilasunset.mac@gmail.com>
+;; URL: https://github.com/rprimus/apples-mode
+;; Version: 0.0.4
+;; Keywords: Applescript, languages
+;; Package-Requires: ((emacs "24.4") (cl-lib "0.5"))
 ;; Contributor: Jean-Christophe Helary <jean.christophe.helary@gmail.com>
-;; Keywords: AppleScript, languages
-(defconst apples-mode-version "0.0.3"
-  "The Current version of `apples-mode'.")
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
