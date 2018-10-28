@@ -1,4 +1,4 @@
-;;; apples-mode.el --- Major mode for editing and executing AppleScript code -*- lexical-binding:t -*-
+;;; my-apples-mode.el --- Major mode for editing and executing AppleScript code -*- lexical-binding:t -*-
 
 ;; Copyright (C) 2011 tequilasunset
 ;; Copyright (C) 2017 Jean-Christophe Helary
@@ -1410,4 +1410,4 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
   (run-mode-hooks 'apples-mode-hook))
 
 (provide 'apples-mode)
-;;; apples-mode.el ends here
+;;; my-apples-mode.el ends here
