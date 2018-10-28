@@ -1,0 +1,5 @@
+(apples-mode
+  :repo "rprimus/apples-mode"
+  :fetcher github
+  :files ("*.el" 
+          "apples-mode"))
