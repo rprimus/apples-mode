@@ -75,7 +75,7 @@
 
 
 ;;; Code:
-(require 'cl)
+(eval-when-compile (require 'cl))
 (require 'cl-lib)
 (require 'easymenu)
 (require 'newcomment)
@@ -86,72 +86,17 @@
 (defconst apples-mode-version "0.0.4"
   "The Current version of `apples-mode'.")
 
+;;; User customizations
 (defgroup apples nil
   "Major mode for editing and executing AppleScript code."
   :group 'languages
   :prefix "apples-")
 
-
-;;; Utilities for internal use
-(defconst apples-identifier "\\(?:\\sw\\|\\s_\\)+") ; "[[:alnum:]_]+"
-
-(defmacro apples-define-show-func (name var)
-  "Define `apples-show-NAME', which is the command to display VAR."
-  `(defun ,(intern (format "apples-show-%s" name)) ()
-     (interactive)
-     (message "%s" (or ,var ""))))
-
-(apples-define-show-func mode-version apples-mode-version)
-
-(defsubst apples-replace-re-comma->spaces (re)
-  "Replace all `,'s with `\\\\s-+' in RE."
-  (replace-regexp-in-string "," "\\\\s-+" re))
-
-(defsubst apples-replace-re-space->spaces (re)
-  "Replace all ` 's with `\\\\s-+' in RE."
-  (replace-regexp-in-string " " "\\\\s-+" re))
-
-;; DB
-(defvar apples-plist nil)
-(defsubst apples-plist-put (prop val)
-  (setq apples-plist (plist-put apples-plist prop val))
-  val)
-(defsubst apples-plist-get (prop)
-  (plist-get apples-plist prop))
-
-;; temp files
 (defcustom apples-tmp-dir nil
   "Specify the path of the temp dir.  If nil, temp dir will be created in
 the same directory where apples-mode.el is located."
   :type '(choice directory (const nil))
   :group 'apples)
-
-(defmacro apples-define-tmp-file (name)
-  "Define `apples-tmp-NAME'."
-  `(progn
-     (defvar ,(intern (format "apples-tmp-%s" name)) nil)
-     (let ((files (apples-plist-get :tmp-files))
-           (file ',(intern (format "apples-tmp-%s" name))))
-       (unless (memq file files)
-         (apples-plist-put :tmp-files (cons file files)))
-       file)))
-
-(defun apples-tmp-files-setup ()
-  "Make the apples-tmp-dir and temp files."
-  (when (apples-plist-get :tmp-files)
-    (let ((dir (expand-file-name
-                (or apples-tmp-dir
-                    (concat (file-name-directory (locate-library "apples-mode"))
-                            "apples-tmp-dir")))))
-      (unless (file-directory-p dir)
-        (mkdir dir t))
-      (cl-loop for file in (apples-plist-get :tmp-files)
-         for tmp = (format "%s/%s.applescript" dir file)
-         do
-           (set file tmp)
-           (unless (file-exists-p tmp)
-             (with-temp-file tmp))
-         finally (apples-plist-put :tmp-files nil)))))
 
 ;;; User variables
 (defcustom apples-follow-error-position t
@@ -304,6 +249,62 @@ nothing (nil).  See also `apples-end-completion-hl-duration'."
   :type 'sexp
   :link '(url-link "http://github.com/m2ym/auto-complete")
   :group 'apples)
+
+;;; Utilities for internal use
+(defconst apples-identifier "\\(?:\\sw\\|\\s_\\)+") ; "[[:alnum:]_]+"
+
+(defmacro apples-define-show-func (name var)
+  "Define `apples-show-NAME', which is the command to display VAR."
+  `(defun ,(intern (format "apples-show-%s" name)) ()
+     (interactive)
+     (message "%s" (or ,var ""))))
+
+(apples-define-show-func mode-version apples-mode-version)
+
+(defsubst apples-replace-re-comma->spaces (re)
+  "Replace all `,'s with `\\\\s-+' in RE."
+  (replace-regexp-in-string "," "\\\\s-+" re))
+
+(defsubst apples-replace-re-space->spaces (re)
+  "Replace all ` 's with `\\\\s-+' in RE."
+  (replace-regexp-in-string " " "\\\\s-+" re))
+
+;; DB
+(defvar apples-plist nil)
+(defsubst apples-plist-put (prop val)
+  (setq apples-plist (plist-put apples-plist prop val))
+  val)
+(defsubst apples-plist-get (prop)
+  (plist-get apples-plist prop))
+
+;; temp files
+(defmacro apples-define-tmp-file (name)
+  "Define `apples-tmp-NAME'."
+  `(progn
+     (defvar ,(intern (format "apples-tmp-%s" name)) nil)
+     (let ((files (apples-plist-get :tmp-files))
+           (file ',(intern (format "apples-tmp-%s" name))))
+       (unless (memq file files)
+         (apples-plist-put :tmp-files (cons file files)))
+       file)))
+
+(defun apples-tmp-files-setup ()
+  "Make the apples-tmp-dir and temp files."
+  (when (apples-plist-get :tmp-files)
+    (let ((dir (expand-file-name
+                (or apples-tmp-dir
+                    (concat (file-name-directory (locate-library "apples-mode"))
+                            "apples-tmp-dir")))))
+      (unless (file-directory-p dir)
+        (mkdir dir t))
+      (cl-loop for file in (apples-plist-get :tmp-files)
+         for tmp = (format "%s/%s.applescript" dir file)
+         do
+           (set file tmp)
+           (unless (file-exists-p tmp)
+             (with-temp-file tmp))
+         finally (apples-plist-put :tmp-files nil)))))
+
 
 ;; Faces
 (cl-macrolet ((face (name &rest attrs)
@@ -541,7 +542,7 @@ apples: Process is still running; kill it? ")
                    (buf (get-buffer-create " *apples-compile*"))
                    (args `("-o" ,output ,filename))
                    msg)
-      (when (every 'file-exists-p `(,filename ,output))
+      (when (cl-every 'file-exists-p `(,filename ,output))
         (setq msg (message "Compiling..."))
         (set-process-sentinel
          (apply #'start-process "apples-compile" buf "osacompile" args)
@@ -804,12 +805,12 @@ are skipped.\n
                   (let ((face-prop (save-excursion
                                      (skip-chars-forward " \t")
                                      (get-text-property (point) 'face))))
-                    (some (lambda (face)
-                            (if (listp face-prop)
-                                (memq face face-prop)
-                              (eq face face-prop)))
-                          '(font-lock-comment-face
-                            font-lock-comment-delimiter-face))))
+                    (cl-some (lambda (face)
+                               (if (listp face-prop)
+                                   (memq face face-prop)
+                                 (eq face face-prop)))
+                             '(font-lock-comment-face
+                               font-lock-comment-delimiter-face))))
        return (point))))
 
 (defsubst apples-leading-word-of-line ()
@@ -836,7 +837,7 @@ whitespaces are deleted."
 
 (defsubst apples-string-match (regexps string)
   "Unlike `string-match', first argument has to be a list of REGEXPS."
-  (some (lambda (re) (string-match re string)) regexps))
+  (cl-some (lambda (re) (string-match re string)) regexps))
 
 (defun apples-parse-lines ()
   "Parse current and previous lines then return the values."
