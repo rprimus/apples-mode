@@ -66,6 +66,10 @@
 ;; Gnu Emacs 25.1.1 on Mac OS X 10.12.3
 ;; Applescript 2.5
 
+;; version 0.0.4
+;; GNU Emacs 26.1 on Mac OS X 10.14.1
+;; Applescript 2.7
+
 ;;; Known Bugs:
 
 
