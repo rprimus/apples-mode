@@ -1,4 +1,4 @@
-(apples-mode
+(my-apples-mode
   :repo "rprimus/apples-mode"
   :fetcher github
   :files ("*.el" 
