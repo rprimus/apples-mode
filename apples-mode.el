@@ -93,7 +93,6 @@
 
 
 ;;; Utilities for internal use
-
 (defconst apples-identifier "\\(?:\\sw\\|\\s_\\)+") ; "[[:alnum:]_]+"
 
 (defmacro apples-define-show-func (name var)
@@ -154,9 +153,7 @@ the same directory where apples-mode.el is located."
              (with-temp-file tmp))
          finally (apples-plist-put :tmp-files nil)))))
 
-
 ;;; User variables
-
 (defcustom apples-follow-error-position t
   "If non-nil, automatically move to the beginning position where error has occurred."
   :type 'boolean
@@ -329,9 +326,7 @@ nothing (nil).  See also `apples-end-completion-hl-duration'."
   (face end-completion :inherit apples-error-highlight)
   )
 
-
 ;;; Process
-
 (apples-define-show-func last-result (apples-plist-get :last-result))
 (apples-define-show-func last-raw-result (apples-plist-get :last-raw-result))
 
@@ -634,9 +629,7 @@ To specify the default query, set `apples-decompile-query'."
                    (list (region-beginning) (region-end))
                  (list (point-min) (point-max))))))))))
 
-
 ;;; Commands
-
 ;; Run
 (defun apples-run-file (&optional filename)
   "Execute FILENAME as AppleScript."
@@ -784,7 +777,6 @@ To specify the default query, set `apples-decompile-query'."
 
 
 ;;; Indentation
-
 (defsubst apples-in-string/comment-p (&optional pos)
   "Return non-nil, if POS is in string or in comment."
   (save-excursion
@@ -1036,7 +1028,6 @@ specified, also highlight the matching statement."
 
 
 ;;; Font lock
-
 (defconst apples-keywords
   `((reserved-words
      . ("about" "above" "after" "against" "and" "apart from" "around" "as"
@@ -1221,7 +1212,6 @@ specified, also highlight the matching statement."
     )
   "Keywords of AppleScript.  Each element has the form (TYPE . KEYWORDS).")
 
-
 (defun apples-keywords (&optional type)
   "Return keywords of TYPE.  If it is omitted, return all keywords."
   (if type
@@ -1252,9 +1242,7 @@ specified, also highlight the matching statement."
   "Font lock keywords for `apples-mode'.
 See also `font-lock-defaults' and `font-lock-keywords'.")
 
-
 ;;; Misc
-
 (defvar apples-mode-map
   (let ((map (make-sparse-keymap)))
     ;; Define menu.
@@ -1383,9 +1371,7 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
              )))
   "Imenu index pattern for AppleScript.  See also `imenu-generic-expression'.")
 
-
 ;;; Major mode
-
 ;;;###autoload
 (defun apples-mode ()
   "Happy AppleScripting!"
