@@ -384,15 +384,15 @@ Otherwise delete stored info."
 (apples-define-tmp-file -1713)
 (defun apples-error--1713-workaround (f/s)
   "Avoid AppleScript's error -1713.\n \
-   execution error: No user interaction allowed.  (-1713)"
+execution error: No user interaction allowed.  (-1713)"
   ;; Ref: <http://macscripter.net/viewtopic.php?id=26334>
   (unless (file-exists-p f/s)
     (with-temp-file apples-tmp--1713
       (insert f/s))
     (setq f/s apples-tmp--1713))
   (apples-do-applescript
-    (format
-      "tell application \"AppleScript Runner\" to do script \"%s\"" f/s)))
+   (format
+    "tell application \"AppleScript Runner\" to do script \"%s\"" f/s)))
 
 ;; The issue existed because osascript did not have an UI.
 ;; This has been fixed in 10.9:
