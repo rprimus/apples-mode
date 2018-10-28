@@ -389,14 +389,14 @@ Otherwise delete stored info."
    (format
     "tell application \"AppleScript Runner\" to do script \"%s\"" f/s)))
 
-# The issue existed because osascript did not have an UI.
-# This has been fixed in 10.9:
-# https://developer.apple.com/library/content/releasenotes/AppleScript/RN-AppleScript/RN-10_9/RN-10_9.html#//apple_ref/doc/uid/TP40000982-CH109-SW1
+;; # The issue existed because osascript did not have an UI.
+;; # This has been fixed in 10.9:
+;; # https://developer.apple.com/library/content/releasenotes/AppleScript/RN-AppleScript/RN-10_9/RN-10_9.html#//apple_ref/doc/uid/TP40000982-CH109-SW1
 
 (defun apples-parse-error (result)
   (destructuring-bind
-      (err-ov (actual-beg . err-buf)
-              &aux err-beg err-end err-type err-msg err-num unknown)
+        (err-ov (actual-beg . err-buf)
+                &aux err-beg err-end err-type err-msg err-num unknown)
       (values (apples-plist-get :err-ov) (apples-plist-get :run-info))
     (if (string-match
          "\\([0-9]+\\):\\([0-9]+\\): \\([^:]+:\\) \\(.+\\) (\\(-?[0-9]+\\))$"
