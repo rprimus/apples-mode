@@ -80,6 +80,9 @@
 (require 'easymenu)
 (require 'newcomment)
 
+;;;###autoload
+(add-to-list 'auto-mode-alist        '("\\.scpt\\'" . apples-mode))
+
 (defconst apples-mode-version "0.0.4"
   "The Current version of `apples-mode'.")
 
