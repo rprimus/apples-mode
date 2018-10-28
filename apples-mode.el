@@ -1113,7 +1113,7 @@ specified, also highlight the matching statement."
                   "/System/Library/CoreServices/AppleScript Runner.app/")
 
 		 # Applescript Runner ?!?
-		 
+
                  ("current user folder"
                   "Macintosh HD:Users:username:"
                   "/Users/username/")
