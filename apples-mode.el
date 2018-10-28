@@ -393,7 +393,7 @@ Otherwise delete stored info."
 ;; https://developer.apple.com/library/content/releasenotes/AppleScript/RN-AppleScript/RN-10_9/RN-10_9.html#//apple_ref/doc/uid/TP40000982-CH109-SW1
 
 (defun apples-parse-error (result)
-  (destructuring-bind
+  (cl-destructuring-bind
         (err-ov (actual-beg . err-buf)
                 &aux err-beg err-end err-type err-msg err-num unknown)
       (values (apples-plist-get :err-ov) (apples-plist-get :run-info))
@@ -425,14 +425,14 @@ If error has occurred, display the error.
 In that case, if executed script is same as current buffer or in it,
 also highlight the error region and go to the beginning of it if
 `apples-follow-error-position' is non-nil."
-  (block nil
+  (cl-block nil
     (apples-plist-put :last-raw-result result)
     (apples-display-result
      (replace-regexp-in-string
       "%" "%%"                          ; %-sequence => %
       (if (= status 1)
           ;; error
-          (multiple-value-bind (unknown beg end type msg num buf ov)
+          (cl-multiple-value-bind (unknown beg end type msg num buf ov)
               (apples-parse-error result)
             ;; -1713
             (when (eq num -1713)
@@ -794,28 +794,28 @@ To specify the default query, set `apples-decompile-query'."
     (nth 3 (syntax-ppss pos))))
 
 (defsubst apples-ideal-prev-bol ()
-  "Return the point of previous bol or nil. Lines like the followings
+  "Return the point of previous bol or nil.  Lines like the followings
 are skipped.\n
 - Empty lines
 - Lines filled by whitespaces
 - Lines whose bol is in string or in comment
 - Comments"
   (save-excursion
-    (loop initially (beginning-of-line)
-          while (not (bobp))
-          do (forward-line -1)
-          unless (or (looking-at "\\s-*$")
-                     (apples-in-string/comment-p)
-                     (let ((face-prop (save-excursion
-                                        (skip-chars-forward " \t")
-                                        (get-text-property (point) 'face))))
-                       (some (lambda (face)
-                               (if (listp face-prop)
-                                   (memq face face-prop)
-                                 (eq face face-prop)))
-                             '(font-lock-comment-face
-                               font-lock-comment-delimiter-face))))
-          return (point))))
+    (cl-loop initially (beginning-of-line)
+       while (not (bobp))
+       do (forward-line -1)
+       unless (or (looking-at "\\s-*$")
+                  (apples-in-string/comment-p)
+                  (let ((face-prop (save-excursion
+                                     (skip-chars-forward " \t")
+                                     (get-text-property (point) 'face))))
+                    (some (lambda (face)
+                            (if (listp face-prop)
+                                (memq face face-prop)
+                              (eq face face-prop)))
+                          '(font-lock-comment-face
+                            font-lock-comment-delimiter-face))))
+       return (point))))
 
 (defsubst apples-leading-word-of-line ()
   "Return the leading word of line as a string.
@@ -877,15 +877,15 @@ whitespaces are deleted."
          (pos (point))
          indent)
     (unless bol-is-in-string
-      (multiple-value-bind
-          (cur-col cur-indent cur-lword prev-bol prev-indent
-                   prev-lword prev-lstr prev-cchar-p pprev-cchar-p)
+      (cl-multiple-value-bind
+            (cur-col cur-indent cur-lword prev-bol prev-indent
+                     prev-lword prev-lstr prev-cchar-p pprev-cchar-p)
           (apples-parse-lines)
         (if bol-is-in-comment
             (setq indent (or prev-indent 0))
           ;; bol is neither in string nor in comment
           (cl-flet ((match? (regs str) (and regs str (apples-string-match regs str)))
-                 (member? (str lst) (and str lst (member str lst))))
+                    (member? (str lst) (and str lst (member str lst))))
             (let* ((cchar-indent?   (and prev-cchar-p (not pprev-cchar-p)))
                    (prev-indent?    (match? apples-indent-regexps prev-lstr))
                    (prev-noindent?  (match? apples-noindent-regexps prev-lstr))
@@ -925,8 +925,8 @@ whitespaces are deleted."
   "Toggle indentation."
   (interactive "^")
   (unless (apples-in-string-p (point-at-bol))
-    (multiple-value-bind
-        (cur-col cur-indent _1 prev? prev-indent _2 _3 prev-cchar-p pprev-cchar-p)
+    (cl-multiple-value-bind
+          (cur-col cur-indent _1 prev? prev-indent _2 _3 prev-cchar-p pprev-cchar-p)
         (apples-parse-lines)
       (let* ((pos (point))
              (offset (if (or prev-cchar-p pprev-cchar-p)
