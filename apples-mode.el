@@ -143,20 +143,19 @@ the same directory where apples-mode.el is located."
                             "apples-tmp-dir")))))
       (unless (file-directory-p dir)
         (mkdir dir t))
-      (loop for file in (apples-plist-get :tmp-files)
-            for tmp = (format "%s/%s.applescript" dir file)
-            do
-            (set file tmp)
-            (unless (file-exists-p tmp)
-              (with-temp-file tmp))
-            finally (apples-plist-put :tmp-files nil)))))
+      (cl-loop for file in (apples-plist-get :tmp-files)
+         for tmp = (format "%s/%s.applescript" dir file)
+         do
+           (set file tmp)
+           (unless (file-exists-p tmp)
+             (with-temp-file tmp))
+         finally (apples-plist-put :tmp-files nil)))))
 
 
 ;;; User variables
 
 (defcustom apples-follow-error-position t
-  "If non-nil, automatically move to the beginning position
-where error has occurred."
+  "If non-nil, automatically move to the beginning position where error has occurred."
   :type 'boolean
   :group 'apples)
 
@@ -307,11 +306,11 @@ nothing (nil). See also `apples-end-completion-hl-duration'."
   :group 'apples)
 
 ;; Faces
-(macrolet ((face (name &rest attrs)
-                 `(defface ,(intern (format "apples-%s" name))
-                    '((t (,@attrs)))
-                    ,(subst-char-in-string ?- ?  (format "Face for %s." name))
-                    :group 'apples)))
+(cl-macrolet ((face (name &rest attrs)
+                `(defface ,(intern (format "apples-%s" name))
+                     '((t (,@attrs)))
+                   ,(subst-char-in-string ?- ?  (format "Face for %s." name))
+                   :group 'apples)))
   (face statements :inherit font-lock-keyword-face)
   (face commands :inherit font-lock-keyword-face :italic t)
   (face operators :inherit font-lock-type-face)
