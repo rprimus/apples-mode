@@ -80,6 +80,9 @@
 (require 'easymenu)
 (require 'newcomment)
 
+(defconst apples-mode-version "0.0.4"
+  "The Current version of `apples-mode'.")
+
 (defgroup apples nil
   "Major mode for editing and executing AppleScript code."
   :group 'languages
