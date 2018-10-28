@@ -525,8 +525,8 @@ apples: Process is still running; kill it? ")
   "Compile FILENAME into OUTPUT."
   (interactive)
   (cl-labels ((read (file prompt default)
-                 (expand-file-name
-                  (or file (read-file-name prompt default default)))))
+                (expand-file-name
+                 (or file (read-file-name prompt default default)))))
     (lexical-let* ((filename (read filename "File: " buffer-file-name))
                    (output (let ((file (read output "Output: " filename)))
                              (if (file-exists-p file)
@@ -1037,65 +1037,65 @@ specified, also highlight the matching statement."
 (defconst apples-keywords
   `((reserved-words
      . ("about" "above" "after" "against" "and" "apart from" "around" "as"
-        "aside from" "at" "back" "before" "beginning" "behind" "below" "beneath"
-        "beside" "between" "but" "by" "considering" "contain" "contains"
-        "contains" "continue" "copy" "div" "does" "eighth" "else" "end" "equal"
-        "equals" "error" "every" "exit" "false" "fifth" "first" "for" "fourth"
-        "from" "front" "get" "given" "global" "if" "ignoring" "in" "instead of"
-        "into" "is" "it" "its" "last" "local" "me" "middle" "mod" "my" "ninth"
-        "not" "of" "on" "onto" "or" "out of" "over" "prop" "property" "put"
-        "ref" "reference" "repeat" "return" "returning" "script" "second" "set"
-        "seventh" "since" "sixth" "some" "tell" "tenth" "that" "the" "then"
-        "third" "through" "thru" "timeout" "times" "to" "transaction" "true"
-        "try" "until" "where" "while" "whose" "with" "without"))
+                "aside from" "at" "back" "before" "beginning" "behind" "below" "beneath"
+                "beside" "between" "but" "by" "considering" "contain" "contains"
+                "contains" "continue" "copy" "div" "does" "eighth" "else" "end" "equal"
+                "equals" "error" "every" "exit" "false" "fifth" "first" "for" "fourth"
+                "from" "front" "get" "given" "global" "if" "ignoring" "in" "instead of"
+                "into" "is" "it" "its" "last" "local" "me" "middle" "mod" "my" "ninth"
+                "not" "of" "on" "onto" "or" "out of" "over" "prop" "property" "put"
+                "ref" "reference" "repeat" "return" "returning" "script" "second" "set"
+                "seventh" "since" "sixth" "some" "tell" "tenth" "that" "the" "then"
+                "third" "through" "thru" "timeout" "times" "to" "transaction" "true"
+                "try" "until" "where" "while" "whose" "with" "without"))
     (statements
      . (,@(mapcar 'car apples-statements)
-        "application" "considering application responses" "continue" "else"
-        "end" "error" "exit" "ignoring application responses" "on"
-        "repeat until" "repeat while" "repeat with" "return" "then"))
+          "application" "considering application responses" "continue" "else"
+          "end" "error" "exit" "ignoring application responses" "on"
+          "repeat until" "repeat while" "repeat with" "return" "then"))
     (commands
      . ("ASCII character" "ASCII number" "activate" "AGStart" "beep" "copy"
-        "count" "choose application" "choose color" "choose file"
-        "choose file name" "choose folder" "choose from list"
-        "choose remote application" "choose URL" "clipboard info" "close access"
-        "current date" "delay" "display alert" "display dialog"
-        "do shell script" "get" "get eof" "get volume settings" "info for"
-        "launch" "list disks" "list folder" "load script" "localized string"
-        "log" "monitor depth" "max monitor depth" "min monitor depth"
-        "mount volume" "new file" "offset" "open for access" "open location"
-        "path to" "path to application" "path to folder" "path to resource"
-        "random number" "read" "round" "run" "run script" "say"
-        "scripting component" "set" "set eof" "set monitor depth"
-        "set the clipboard to" "set volume" "start log" "stop log"
-        "store script" "system attribute" "system info" "time to GMT"
-        "the clipboard" "write"))
+                          "count" "choose application" "choose color" "choose file"
+                          "choose file name" "choose folder" "choose from list"
+                          "choose remote application" "choose URL" "clipboard info" "close access"
+                          "current date" "delay" "display alert" "display dialog"
+                          "do shell script" "get" "get eof" "get volume settings" "info for"
+                          "launch" "list disks" "list folder" "load script" "localized string"
+                          "log" "monitor depth" "max monitor depth" "min monitor depth"
+                          "mount volume" "new file" "offset" "open for access" "open location"
+                          "path to" "path to application" "path to folder" "path to resource"
+                          "random number" "read" "round" "run" "run script" "say"
+                          "scripting component" "set" "set eof" "set monitor depth"
+                          "set the clipboard to" "set volume" "start log" "stop log"
+                          "store script" "system attribute" "system info" "time to GMT"
+                          "the clipboard" "write"))
     (operators
      . ("&" "*" "+" "-" "/" "<" "<=" "=" ">" ">=" "^" "a ref to" "a ref"
-        "a reference to" "a reference" "and" "as" "begin with" "begins with"
-        "comes after" "comes before" "contain" "contains" "div"
-        "does not come after" "does not come before" "does not contain"
-        "does not equal" "doesn't come after" "doesn't come before"
-        "doesn't contain" "doesn't equal" "end with" "ends with" "equal to"
-        "equals" "greater than or equal to" "greater than or equal"
-        "greater than" "in not contained by" "is contained by" "is equal to"
-        "is equal" "is greater than or equal to" "is greater than or equal"
-        "is greater than" "is in" "is less than or equal to"
-        "is less than or equal" "is less than" "is not equal to" "is not equal"
-        "is not greater than or equal to" "is not greater than or equal"
-        "is not greater than" "is not in" "is not less than or equal to"
-        "is not less than or equal" "is not less than" "is not"
-        "isn't contained by" "isn't equal to" "isn't equal"
-        "isn't greater than or equal to" "isn't greater than or equal"
-        "isn't greater than" "isn't less than or equal to"
-        "isn't less than or equal" "isn't less than" "isn't"
-        "less than or equal to" "less than or equal" "less than" "mod" "not"
-        "or" "ref to" "ref" "reference to" "reference" "start with"
-        "starts with"))
+            "a reference to" "a reference" "and" "as" "begin with" "begins with"
+            "comes after" "comes before" "contain" "contains" "div"
+            "does not come after" "does not come before" "does not contain"
+            "does not equal" "doesn't come after" "doesn't come before"
+            "doesn't contain" "doesn't equal" "end with" "ends with" "equal to"
+            "equals" "greater than or equal to" "greater than or equal"
+            "greater than" "in not contained by" "is contained by" "is equal to"
+            "is equal" "is greater than or equal to" "is greater than or equal"
+            "is greater than" "is in" "is less than or equal to"
+            "is less than or equal" "is less than" "is not equal to" "is not equal"
+            "is not greater than or equal to" "is not greater than or equal"
+            "is not greater than" "is not in" "is not less than or equal to"
+            "is not less than or equal" "is not less than" "is not"
+            "isn't contained by" "isn't equal to" "isn't equal"
+            "isn't greater than or equal to" "isn't greater than or equal"
+            "isn't greater than" "isn't less than or equal to"
+            "isn't less than or equal" "isn't less than" "isn't"
+            "less than or equal to" "less than or equal" "less than" "mod" "not"
+            "or" "ref to" "ref" "reference to" "reference" "start with"
+            "starts with"))
     (handler-parameter-labels
      . ("about" "above" "against" "apart from" "around" "aside from" "at"
-        "below" "beneath" "beside" "between" "by" "for" "from" "given"
-        "instead of" "into" "on" "onto" "out of" "over" "since" "thru" "through"
-        "under"))
+                "below" "beneath" "beside" "between" "by" "for" "from" "given"
+                "instead of" "into" "on" "onto" "out of" "over" "since" "thru" "through"
+                "under"))
 
     (standard-folders
      . ,(let ((lst
@@ -1214,13 +1214,13 @@ specified, also highlight the matching statement."
                   "/System/Library/Speech/Voices/")
                  )))
           (loop for (folder path posix) in (nreverse lst)
-                collect (propertize folder 'path path 'posix posix))))
+             collect (propertize folder 'path path 'posix posix))))
     )
-  "Keywords of AppleScript. Each element has the form (TYPE . KEYWORDS).")
+  "Keywords of AppleScript.  Each element has the form (TYPE . KEYWORDS).")
 
 
 (defun apples-keywords (&optional type)
-  "Return keywords of TYPE. If it is omitted, return all keywords."
+  "Return keywords of TYPE.  If it is omitted, return all keywords."
   (if type
       (cdr (assq type apples-keywords))
     (apply 'append (mapcar 'cdr apples-keywords))))
@@ -1372,13 +1372,13 @@ See also `font-lock-defaults' and `font-lock-keywords'.")
   (nreverse
    (mapcar (lambda (pair)
              `(,(car pair)
-               ,(concat "^\\s-*" (apples-replace-re-comma->spaces (cdr pair)))
-               1))
+                ,(concat "^\\s-*" (apples-replace-re-comma->spaces (cdr pair)))
+                1))
            '(("Handlers"  . "\\(?:on\\|to\\),\\(.+\\)$" )
              ("Tells"     . "tell,\\(.+\\)$"            )
              ("Variables" . "set,\\(.+\\),to"           )
              )))
-  "Imenu index pattern for AppleScript. See also `imenu-generic-expression'.")
+  "Imenu index pattern for AppleScript.  See also `imenu-generic-expression'.")
 
 
 ;;; Major mode
