@@ -7,7 +7,7 @@
 ;; Author: tequilasunset <tequilasunset.mac@gmail.com>
 ;; URL: https://github.com/rprimus/apples-mode
 ;; Version: 0.0.4
-;; Keywords: Applescript, languages
+;; Keywords: Apple, Applescript, OSA, OSX, macOS, Elisp, languages
 ;; Package-Requires: ((emacs "24.4") (cl-lib "0.5"))
 ;; Contributor: Jean-Christophe Helary <jean.christophe.helary@gmail.com>
 
